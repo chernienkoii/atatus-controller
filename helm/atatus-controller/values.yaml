@@ -1,0 +1,70 @@
+# Default values for atatus-controller.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+replicaCount: 1
+image:
+  repository: chernyenkocomua/atatus-controller
+  pullPolicy: IfNotPresent
+  tag: "v0.6"
+
+podAnnotations:
+     prometheus.io/scrape: "atatus-controller"
+
+env:
+  - name: LICENSED_ANNOTATION
+    value: "atatus_licensed"
+  - name: NAMESPACE
+    value: "frg-app"
+  - name: LICENSED_PODS_LIMIT
+    value: "4"
+  - name: INTERVAL_SECONDS
+    value: '10'
+  - name: NODE_NAME
+    value: "beta-frg-worker-02"
+rbac:
+  create: true
+  serviceAccountAnnotations: {}
+  serviceAccountName: "atatus-controller"
+  automountToken: true
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+podSecurityPolicy:
+  create: false
+  name: ""
+resources: 
+  limits:
+   cpu: 50m
+   memory: 100Mi
+  requests:
+    cpu: 25m
+    memory: 50Mi
+
+nodeSelector:
+  mdteams_type: app
+
+tolerations: []
+
+affinity: {}
